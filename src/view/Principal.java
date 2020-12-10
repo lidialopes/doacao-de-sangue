@@ -24,6 +24,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/user.png"))); // NOI18N
 
         lblNotificacoes.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblNotificacoes.setForeground(new java.awt.Color(255, 51, 51));
         lblNotificacoes.setText("Suas Notificações");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
