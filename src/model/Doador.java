@@ -6,11 +6,11 @@ public class Doador {
     private String nome;
     private String email;
     private String senha;
-    private String tipoSanguineo;
-    private String endereco;
+    private TipoSanguineo tipoSanguineo;
+    private Endereco endereco;
 
     public Doador(String login, String nome, String email, 
-            String senha, String tipoSanguineo, String endereco) {
+            String senha, TipoSanguineo tipoSanguineo, Endereco endereco) {
         this.login = login;
         this.nome = nome;
         this.email = email;
@@ -62,19 +62,19 @@ public class Doador {
         this.senha = senha;
     }
 
-    public String getTipoSanguineo() {
+    public TipoSanguineo getTipoSanguineo() {
         return tipoSanguineo;
     }
 
-    public void setTipoSanguineo(String tipoSanguineo) {
+    public void setTipoSanguineo(TipoSanguineo tipoSanguineo) {
         this.tipoSanguineo = tipoSanguineo;
     }
 
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
+    public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
     

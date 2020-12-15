@@ -1,15 +1,26 @@
 package controller;
 
-import model.Doador;
+import model.*;
 import dao.DoadorDAO;
+import org.json.*;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class DoadorController {
     
     private DoadorDAO dao;
-
+    private EnderecoController enderecoController;
+    private TipoSanguineoController tipoController;
+    
     public DoadorController() {
         this.dao = new DoadorDAO();
+        this.enderecoController = new EnderecoController();
+        this.tipoController = new TipoSanguineoController();
     }
     
     public boolean autentica(String login, String password) {
@@ -32,5 +43,88 @@ public class DoadorController {
                 && d.getSenha().equals(password);
     }
     
+    private HashMap<String, Double> addressToCoordinates(HashMap<String, String> endereco){
+        String uri = "https://nominatim.openstreetmap.org/search";
+        StringBuilder builderParams = new StringBuilder(uri);
+        builderParams.append("?").append("format").append("=").append("json").append("&");
+        
+        int flag = 0;
+        for (String key : endereco.keySet()) {
+            builderParams.append(key)
+                    .append('=')
+                    .append(endereco.get(key).replace(" ", "%20"));
+            flag++;
+            if(flag < endereco.size())
+                builderParams.append('&');
+        }
+        
+        JSONObject res = sendGet(builderParams.toString());
+        
+        HashMap<String, Double> coordinates = new HashMap<>();
+        coordinates.put("lat", res.getDouble("lat"));
+        coordinates.put("lon", res.getDouble("lon"));
+        
+        return coordinates;
+    }
     
+    public JSONObject getAddressInfoByCep(String cep){
+        String uri = "https://viacep.com.br/ws/" + cep + "/json/";
+        return sendGet(uri);
+    }
+
+    private JSONObject sendGet(String uri){
+        JSONObject res = new JSONObject();
+        try {
+            HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .build();
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .GET()
+                .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            System.out.println(response.uri());
+
+            String body = response.body();
+            if(body.charAt(0) != '{')
+                body = body.substring(1, body.length()-1);
+
+            res = new JSONObject(body);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+    
+    public boolean cadastra(String bairro, String cep, String email, String login, 
+            String municipio,String nome, String rua, String senha, 
+            String uf, String tipoSanguineo){
+
+        HashMap<String, String> enderecoMap = new HashMap<>();
+        enderecoMap.put("street", rua);
+        enderecoMap.put("city", bairro + " " + municipio);
+        enderecoMap.put("state", uf);
+        enderecoMap.put("postalcode", cep);
+
+        HashMap<String, Double> coordinates = addressToCoordinates(enderecoMap);
+        
+        TipoSanguineo tipo = new TipoSanguineo(tipoSanguineo);
+        tipo.setId(tipoController.getIdByTipo(tipoSanguineo));
+        Endereco endereco = new Endereco(bairro, cep, municipio, rua, uf, coordinates.get("lat"), coordinates.get("lon"));
+        endereco.setId(enderecoController.exists(endereco));
+        System.out.println("===============================");
+        System.out.println(endereco.getId() + "  " + endereco.getRua());
+        System.out.println("===============================");
+        Doador doador = new Doador(login, nome, email, senha, tipo, endereco);
+        
+        try {
+            dao.insert(doador);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+            return true;        
+    }
 }

@@ -14,9 +14,9 @@ public class DoadorDAO {
         stm.setString(2, d.getEmail());
         stm.setString(3, d.getLogin());
         stm.setString(4, d.getSenha());
-        stm.setInt(5, 1);
-        stm.setInt(6, 1);
-        stm.execute();
+        stm.setInt(5, d.getTipoSanguineo().getId());
+        stm.setInt(6, d.getEndereco().getId());
+        stm.executeUpdate();
     };
     
     public Doador searchByLogin(String login) throws SQLException, NullPointerException { 
