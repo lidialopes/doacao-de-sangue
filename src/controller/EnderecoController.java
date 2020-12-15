@@ -13,9 +13,6 @@ public class EnderecoController {
     public int exists(Endereco endereco){
         try {
             int id = dao.getIdByCepERua(endereco.getCep(), endereco.getRua());
-            System.out.println("*************");
-            System.out.println(id);
-            System.out.println("*************");
             if(id == 0)
                 return cadastra(endereco);
             return id;
