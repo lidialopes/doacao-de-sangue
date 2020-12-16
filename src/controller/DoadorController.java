@@ -82,8 +82,6 @@ public class DoadorController {
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             
-            System.out.println(response.uri());
-
             String body = response.body();
             if(body.charAt(0) != '{')
                 body = body.substring(1, body.length()-1);
@@ -112,7 +110,6 @@ public class DoadorController {
         TipoSanguineo tipo = tipoController.getByTipo(tipoSanguineo);
         Endereco endereco = enderecoController.getByCampos(bairro, cep, municipio, rua, uf, coordinates.get("lat"), coordinates.get("lon"));
 
-        System.out.println(endereco.getId() + "  " + endereco.getRua());
         Doador doador = new Doador(login, nome, email, senha, tipo, endereco);
         
         try {
