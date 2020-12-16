@@ -10,22 +10,24 @@ public class EnderecoController {
         this.dao = new EnderecoDAO();
     }
     
-    public int exists(Endereco endereco){
+    public void cadastra(Endereco endereco){
         try {
-            int id = dao.getIdByCepERua(endereco.getCep(), endereco.getRua());
-            if(id == 0)
-                return cadastra(endereco);
-            return id;
+            dao.insert(endereco);
         } catch (Exception e) {
         }
-        return 0;
     }
     
-    public int cadastra(Endereco endereco){
+    public Endereco getByCampos(String bairro, String cep, String cidade, String rua, String uf, double lat, double lon){
+        Endereco endereco = new Endereco();
+
         try {
-            return dao.insert(endereco);
+            endereco = dao.searchExceptId(bairro, cep, cidade, rua, uf, lat, lon);
+            if(endereco == null || endereco.getId() == 0){
+                cadastra(new Endereco(bairro, cep, cidade, rua, uf, lat, lon));
+                endereco = dao.searchExceptId(bairro, cep, cidade, rua, uf, lat, lon);
+            }
         } catch (Exception e) {
         }
-        return 0;
+        return endereco;
     }
 }

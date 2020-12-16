@@ -1,9 +1,7 @@
 package controller;
 
 import dao.TipoSanguineoDAO;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import model.TipoSanguineo;
 
 public class TipoSanguineoController {
@@ -22,23 +20,12 @@ public class TipoSanguineoController {
         }
         return tipos;
     }
-    
-    public HashMap<Integer, TipoSanguineo> getAll(){
-        HashMap<Integer, TipoSanguineo> tipoSanguineoMap = null;
+            
+    public TipoSanguineo getByTipo(String tipo){
         try {
-            tipoSanguineoMap = dao.getAll();
+            return dao.getByTipo(tipo);
         } catch (Exception e) {
-            e.printStackTrace();
         }
-        return tipoSanguineoMap;
-    }
-    
-    public int getIdByTipo(String tipo){
-        try {
-            return dao.getIdByTipo(tipo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return null;
     }
 }

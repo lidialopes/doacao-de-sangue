@@ -8,16 +8,33 @@ import java.sql.Statement;
 import model.Endereco;
 
 public class EnderecoDAO {
-    public int getIdByCepERua(String cep, String rua) throws SQLException{
+    
+    public Endereco searchExceptId(String bairro, String cep, String cidade, String rua, String uf, double lat, double lon) throws SQLException{
+        Endereco e = new Endereco();
         Connection con = Conexao.getConnection();
-        PreparedStatement stm = con.prepareStatement("select id from endereco where cep = ? and rua = ?");
-        stm.setString(1, cep);
-        stm.setString(2, rua);
+        PreparedStatement stm = con.prepareStatement("select * from endereco "
+                + "where rua = ? and bairro = ? and cidade = ? and uf = ? "
+                + "and cep = ? and latitude = ? and longitude = ?");
+        stm.setString(1, rua);
+        stm.setString(2, bairro);
+        stm.setString(3, cidade);
+        stm.setString(4, uf);
+        stm.setString(5, cep);
+        stm.setDouble(6, lat);
+        stm.setDouble(7, lon);
         ResultSet res = stm.executeQuery();
         
-        while (res.next())
-            return res.getInt("endereco.id");
-        return 0;
+        while (res.next()){
+            e.setBairro(res.getString("endereco.bairro"));
+            e.setCep(res.getString("endereco.cep"));
+            e.setId(res.getInt("endereco.id"));
+            e.setLatitude(res.getDouble("endereco.latitude"));
+            e.setLongitude(res.getDouble("endereco.longitude"));
+            e.setMunicipio(res.getString("endereco.cidade"));
+            e.setRua(res.getString("endereco.rua"));
+            e.setUf(res.getString("endereco.uf"));
+        }
+        return e;
     }
     
     public Endereco getById(int id) throws SQLException {
@@ -40,7 +57,7 @@ public class EnderecoDAO {
         return endereco;
     }
     
-    public int insert(Endereco e) throws SQLException {
+    public void insert(Endereco e) throws SQLException {
         Connection con = Conexao.getConnection();
         String sql = "insert into endereco(rua, cep, cidade, bairro, uf, latitude, longitude) values (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -51,9 +68,6 @@ public class EnderecoDAO {
         stm.setString(5, e.getUf());
         stm.setDouble(6, e.getLatitude());
         stm.setDouble(7, e.getLongitude());
-
-        return stm.executeUpdate() == 1 
-                ? stm.getGeneratedKeys().getInt(1) 
-                : 0;
+        stm.executeUpdate();
     }
 }

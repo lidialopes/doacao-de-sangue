@@ -9,7 +9,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DoadorController {
     
@@ -43,21 +45,17 @@ public class DoadorController {
                 && d.getSenha().equals(password);
     }
     
-    private HashMap<String, Double> addressToCoordinates(HashMap<String, String> endereco){
+    private HashMap<String, Double> addressToCoordinates(List<String> endereco){
         String uri = "https://nominatim.openstreetmap.org/search";
         StringBuilder builderParams = new StringBuilder(uri);
-        builderParams.append("?").append("format").append("=").append("json").append("&");
+        builderParams.append("?").append("format=json").append("&q=");
         
-        int flag = 0;
-        for (String key : endereco.keySet()) {
-            builderParams.append(key)
-                    .append('=')
-                    .append(endereco.get(key).replace(" ", "%20"));
-            flag++;
-            if(flag < endereco.size())
-                builderParams.append('&');
+        for (String campo : endereco) {
+            builderParams.append(campo.replace(" ", "+"));
+            if(endereco.indexOf(campo) < endereco.size() - 1)
+                builderParams.append("+");
         }
-        
+               
         JSONObject res = sendGet(builderParams.toString());
         
         HashMap<String, Double> coordinates = new HashMap<>();
@@ -102,21 +100,19 @@ public class DoadorController {
             String municipio,String nome, String rua, String senha, 
             String uf, String tipoSanguineo){
 
-        HashMap<String, String> enderecoMap = new HashMap<>();
-        enderecoMap.put("street", rua);
-        enderecoMap.put("city", bairro + " " + municipio);
-        enderecoMap.put("state", uf);
-        enderecoMap.put("postalcode", cep);
+        List<String> enderecoList = new ArrayList<>();
+        enderecoList.add(rua);
+        enderecoList.add(bairro);
+        enderecoList.add(municipio);
+        enderecoList.add(uf);
+        enderecoList.add(cep);
 
-        HashMap<String, Double> coordinates = addressToCoordinates(enderecoMap);
+        HashMap<String, Double> coordinates = addressToCoordinates(enderecoList);
         
-        TipoSanguineo tipo = new TipoSanguineo(tipoSanguineo);
-        tipo.setId(tipoController.getIdByTipo(tipoSanguineo));
-        Endereco endereco = new Endereco(bairro, cep, municipio, rua, uf, coordinates.get("lat"), coordinates.get("lon"));
-        endereco.setId(enderecoController.exists(endereco));
-        System.out.println("===============================");
+        TipoSanguineo tipo = tipoController.getByTipo(tipoSanguineo);
+        Endereco endereco = enderecoController.getByCampos(bairro, cep, municipio, rua, uf, coordinates.get("lat"), coordinates.get("lon"));
+
         System.out.println(endereco.getId() + "  " + endereco.getRua());
-        System.out.println("===============================");
         Doador doador = new Doador(login, nome, email, senha, tipo, endereco);
         
         try {
