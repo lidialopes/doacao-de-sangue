@@ -28,4 +28,12 @@ public class TipoSanguineoController {
         }
         return null;
     }
+
+    public TipoSanguineo getById(int id){
+        try {
+            return dao.getById(id);
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }

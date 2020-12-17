@@ -54,5 +54,14 @@ public class ReceptorController {
         }
         return count;
     }
-
+    
+    public List<Receptor> buscaReceptores(){
+        try{
+            return receptorDao.list();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("here");
+        return null;
+    }    
 }

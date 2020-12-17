@@ -34,4 +34,18 @@ public class TipoSanguineoDAO {
         }
         return tipoSanguineo;
     } 
+
+    public TipoSanguineo getById(int id) throws SQLException{
+        TipoSanguineo tipoSanguineo = new TipoSanguineo();
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from tipo_sanguineo where id = ?");
+        stm.setInt(1, id);
+        ResultSet res = stm.executeQuery();
+
+        if(res.next()){            
+            tipoSanguineo.setId(res.getInt("tipo_sanguineo.id"));
+            tipoSanguineo.setTipo(res.getString("tipo_sanguineo.tipo"));
+        }
+        return tipoSanguineo;
+    } 
 }

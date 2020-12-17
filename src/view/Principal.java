@@ -1,57 +1,91 @@
 package view;
 
+import controller.ReceptorController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Receptor;
+
 public class Principal extends javax.swing.JFrame {
 
+    private ReceptorController receptorController;
+    
     public Principal() {
         initComponents();
+        receptorController = new ReceptorController();
+        iniciaTabela();
+    }
+    
+    private void iniciaTabela(){
+        String[] colunas = {"Nome", "Hospital", "Leito", "Tipo Sanguíneo", "Obs"};
+        DefaultTableModel model = (DefaultTableModel) tbNotificacoes.getModel();
+        model.setColumnIdentifiers(colunas);
+        
+        List<Receptor> dados =  new ArrayList<>();
+        dados = receptorController.buscaReceptores();
+        
+        if(dados == null){
+            JOptionPane.showMessageDialog(null, "Não há nehuma notificação para você!");
+            tbNotificacoes.setVisible(false);
+        } else {            
+            dados.forEach(item -> {
+                String[] linha = {item.getNome(),
+                    item.getHospital(),
+                    item.getLeito(),
+                    item.getTipoSanguineo().getTipo(),
+                    item.getObs()};
+                model.addRow(linha);
+            });    
+        }
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblNotificacoes1 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         lblNotificacoes = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbNotificacoes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Principal");
 
-        lblNotificacoes1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblNotificacoes1.setForeground(new java.awt.Color(102, 102, 102));
-        lblNotificacoes1.setText("Não há novas notificações");
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/user.png"))); // NOI18N
-
         lblNotificacoes.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblNotificacoes.setText("Suas Notificações");
+
+        tbNotificacoes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbNotificacoes.setAutoscrolls(false);
+        jScrollPane1.setViewportView(tbNotificacoes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(130, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblNotificacoes1)
-                    .addComponent(lblNotificacoes))
-                .addGap(77, 77, 77)
-                .addComponent(jLabel1)
-                .addGap(20, 20, 20))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblNotificacoes)
+                .addGap(191, 191, 191))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(lblNotificacoes)))
-                .addGap(75, 75, 75)
-                .addComponent(lblNotificacoes1)
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(lblNotificacoes)
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         pack();
@@ -89,8 +123,8 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNotificacoes;
-    private javax.swing.JLabel lblNotificacoes1;
+    private javax.swing.JTable tbNotificacoes;
     // End of variables declaration//GEN-END:variables
 }

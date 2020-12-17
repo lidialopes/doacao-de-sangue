@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Doador;
 import model.Receptor;
+import model.TipoSanguineo;
 
 public class ReceptorDao {
     public void insert(Receptor receptor) throws SQLException{
@@ -20,20 +21,26 @@ public class ReceptorDao {
         stm.executeUpdate();
     };
     
-        public ArrayList<Receptor> list() throws SQLException {
+    public ArrayList<Receptor> list() throws SQLException {
         Connection con = Conexao.getConnection();
-        PreparedStatement stm = con.prepareStatement("select * from necessitado");
+        PreparedStatement stm = con.prepareStatement("select n.id, n.nome, n.hospital, n.leito, n.obs, t.tipo, t.id " +
+                "from necessitado n " +
+                "join tipo_sanguineo t on n.id_tipo_sanguineo = t.id;");
         ResultSet res = stm.executeQuery();
         
         ArrayList<Receptor> necessitados = new ArrayList<>();
         
         while (res.next()) {
             Receptor r = new Receptor();
-            r.setId(res.getInt("id"));
-            r.setNome(res.getString("nome"));
-            r.setHospital(res.getString("hospital"));
-            r.setLeito(res.getString("leito"));
-            r.setObs(res.getString("obs"));
+            TipoSanguineo tipo = new TipoSanguineo();
+            r.setId(res.getInt("n.id"));
+            r.setNome(res.getString("n.nome"));
+            r.setHospital(res.getString("n.hospital"));
+            r.setLeito(res.getString("n.leito"));
+            r.setObs(res.getString("n.obs"));
+            tipo.setId(res.getInt("t.id"));
+            tipo.setTipo(res.getString("t.tipo"));
+            r.setTipoSanguineo(tipo);
             necessitados.add(r);
         }
         return necessitados;
