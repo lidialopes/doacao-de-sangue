@@ -7,6 +7,7 @@ import java.util.List;
 import model.Endereco;
 import model.Receptor;
 import model.TipoSanguineo;
+import model.Doador;
 import util.CoordenadaUtil;
 
 public class ReceptorController {
@@ -44,12 +45,14 @@ public class ReceptorController {
     public int buscaDoadoresProximos(HashMap<String, Double> coordenadaReceptor, int raio) {
         int count = 0;
         
-        int qntDoa = usuarioController.getDoadores().size();
-        
-        //Fazer um for verificando capturando a lat e lon e calculando a distancia comparando com o raio, depois somar o count
-//        double distancia = coordenadaUtil.calculaDistanciaEntre(coordenadaDoador, coordenadaReceptor);
-        
-        return qntDoa;
+        for(Doador doador : usuarioController.getDoadores()){
+            HashMap<String, Double> location = new HashMap<>();
+            location.put("lat", doador.getEndereco().getLatitude());
+            location.put("lon", doador.getEndereco().getLatitude());
+            
+            if(coordenadaUtil.calculaDistanciaEntre(location, coordenadaReceptor) <= raio) count++;
+        }
+        return count;
     }
 
 }

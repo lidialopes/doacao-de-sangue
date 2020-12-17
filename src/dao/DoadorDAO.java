@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Doador;
+import model.Endereco;
 
 public class DoadorDAO {    
     public void insert(Doador d) throws SQLException{
@@ -44,15 +45,45 @@ public class DoadorDAO {
         
         ArrayList<Doador> doadores = new ArrayList<>();
         
-        
-        //Falta retornar os outros campos, PRIORIDADE: LAT E LON
         while (res.next()) {    
             Doador d = new Doador();
-            d.setNome("doador.nome");
+            d.setId(res.getInt("id"));
+            d.setNome(res.getString("nome"));
+            d.setEmail(res.getString("email"));
+            d.setLogin(res.getString("login"));
+            d.setSenha(res.getString("senha"));
+            
             doadores.add(d);
         }
         return doadores;
     };
+    
+    public ArrayList<Doador> listDoadorComEndereco() throws SQLException {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from doador join endereco on endereco.id = doador.id_endereco");
+        ResultSet res = stm.executeQuery();
+        
+        ArrayList<Doador> doadores = new ArrayList<>();
+        
+        while (res.next()) {    
+            Doador d = new Doador();
+            d.setId(res.getInt("doador.id"));
+            d.setNome(res.getString("doador.nome"));
+            d.setEmail(res.getString("doador.email"));
+            d.setLogin(res.getString("doador.login"));
+            d.setSenha(res.getString("doador.senha"));
+            
+            Endereco end = new Endereco();
+            end.setLatitude(res.getDouble("endereco.latitude"));
+            end.setLongitude(res.getDouble("endereco.longitude"));
+            
+            d.setEndereco(end);
+                    
+            doadores.add(d);
+        }
+        return doadores;
+    }
+    
     public void update(Doador d){};
     public void remove(){};
 }

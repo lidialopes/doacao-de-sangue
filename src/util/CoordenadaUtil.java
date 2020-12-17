@@ -29,7 +29,7 @@ public class CoordenadaUtil {
     }
     
     public HashMap<String, Double> addressToCoordinates(String endereco){
-        String uri = "https://nominatim.openstreetmap.org/search?format=json&q=" + endereco.replace(" ", "+");
+        String uri = "https://nominatim.openstreetmap.org/search?format=json&q=Hospital+" + endereco.replace(" ", "+");
 
         System.out.println(uri);
         
