@@ -3,18 +3,28 @@ package model;
 public class Receptor {
     private int id;
     private String nome;
-    private String email;   
-    private TipoSanguineo tipoSanguineo;
-    private Endereco endereco;
-    
-    public Receptor(String nome, String email,TipoSanguineo tipoSanguineo, 
-            Endereco endereco) {
-        this.nome = nome;
-        this.email = email;
-        this.tipoSanguineo = tipoSanguineo;
-        this.endereco = endereco;
-    }
+    private String hospital;
+    private String leito;
+    private String obs;
+    private TipoSanguineo tipoSanguineo;    
 
+    public Receptor(int id, String nome, String hospital, String leito, String obs, TipoSanguineo tipoSanguineo) {
+        this.id = id;
+        this.nome = nome;
+        this.hospital = hospital;
+        this.leito = leito;
+        this.obs = obs;
+        this.tipoSanguineo = tipoSanguineo;
+    }
+    
+    public Receptor(String nome, String hospital, String leito, String obs, TipoSanguineo tipoSanguineo) {
+        this.nome = nome;
+        this.hospital = hospital;
+        this.leito = leito;
+        this.obs = obs;
+        this.tipoSanguineo = tipoSanguineo;
+    }
+    
     public Receptor() {
     }
 
@@ -34,12 +44,28 @@ public class Receptor {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
+    public String getHospital() {
+        return hospital;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setHospital(String hospital) {
+        this.hospital = hospital;
+    }
+
+    public String getLeito() {
+        return leito;
+    }
+
+    public void setLeito(String leito) {
+        this.leito = leito;
+    }
+
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
     }
 
     public TipoSanguineo getTipoSanguineo() {
@@ -49,12 +75,4 @@ public class Receptor {
     public void setTipoSanguineo(TipoSanguineo tipoSanguineo) {
         this.tipoSanguineo = tipoSanguineo;
     }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    } 
 }

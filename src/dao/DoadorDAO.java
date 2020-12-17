@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import model.Doador;
 
 public class DoadorDAO {    
@@ -36,7 +37,22 @@ public class DoadorDAO {
         }
         return d;
     };
-    public void list(){};
+    public ArrayList<Doador> list() throws SQLException {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from doador");
+        ResultSet res = stm.executeQuery();
+        
+        ArrayList<Doador> doadores = new ArrayList<>();
+        
+        
+        //Falta retornar os outros campos, PRIORIDADE: LAT E LON
+        while (res.next()) {    
+            Doador d = new Doador();
+            d.setNome("doador.nome");
+            doadores.add(d);
+        }
+        return doadores;
+    };
     public void update(Doador d){};
     public void remove(){};
 }

@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UsuarioController {
     
@@ -123,5 +125,14 @@ public class UsuarioController {
             return false;
         }
             return true;        
+    }
+    
+    public ArrayList<Doador> getDoadores() {
+        try {
+            return dao.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

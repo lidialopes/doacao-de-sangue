@@ -15,7 +15,7 @@ public class Conexao {
         
         Connection conn = null;
         conn = DriverManager.getConnection("jdbc:mysql://" +
-                ip + ":" + port + "/", user, password);
+                ip + ":" + port + "/?serverTimezone=UTC", user, password);
         
         conn.setCatalog(name);
         System.out.println("Conectado com o Banco de Dados!\n");
