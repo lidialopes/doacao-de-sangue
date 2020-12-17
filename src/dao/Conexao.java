@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Conexao {
     public static String user = "root";
-    public static String password = "1234";
+    public static String password = "";
     public static String ip = "localhost";
     public static String port = "3306";
     public static String name = "doacao";

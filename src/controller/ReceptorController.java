@@ -54,7 +54,18 @@ public class ReceptorController {
     }
 
     public double buscaDoadoresProximos() {
+        HashMap<String, Double> coordenadaDoador = new HashMap<>();
+        //Coordenadas do Socorrão II pra teste
+        coordenadaDoador.put("lat", -2.56806015);
+        coordenadaDoador.put("lon", 44.18997459009968);
+        
+        //Paco do lumiar
+        HashMap<String, Double> coordenadaReceptor = new HashMap<>();
+        coordenadaReceptor.put("lat", -2.537606);
+        coordenadaReceptor.put("lon", -44.1637418);
+              //-2.537606, -44.1637418
         double distancia = coordenadaUtil.calculaDistanciaEntre(coordenadaDoador, coordenadaReceptor);
+        System.out.println(distancia);
         return distancia;
     }
 

@@ -20,7 +20,7 @@ public class Inicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Donator.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Donator.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Donator.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 DonatorMouseClicked(evt);
@@ -52,6 +52,12 @@ public class Inicio extends javax.swing.JFrame {
                 .addComponent(lblDonator)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        Location.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LocationMouseClicked(evt);
+            }
+        });
 
         lblImgLocation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/location.png"))); // NOI18N
 
@@ -120,6 +126,12 @@ public class Inicio extends javax.swing.JFrame {
         tela.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_DonatorMouseClicked
+
+    private void LocationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LocationMouseClicked
+        ReceptorView tela = new ReceptorView();
+        tela.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_LocationMouseClicked
 
     /**
      * @param args the command line arguments

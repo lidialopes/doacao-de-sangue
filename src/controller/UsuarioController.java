@@ -82,6 +82,10 @@ public class UsuarioController {
                 .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             
+            System.out.println(uri);
+            System.out.println(request);
+            
+            
             String body = response.body();
             if(body.charAt(0) != '{')
                 body = body.substring(1, body.length()-1);
