@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DoadorController {
+public class UsuarioController {
     
     private DoadorDAO dao;
     private EnderecoController enderecoController;
     private TipoSanguineoController tipoController;
     
-    public DoadorController() {
+    public UsuarioController() {
         this.dao = new DoadorDAO();
         this.enderecoController = new EnderecoController();
         this.tipoController = new TipoSanguineoController();
@@ -45,7 +45,7 @@ public class DoadorController {
                 && d.getSenha().equals(password);
     }
     
-    private HashMap<String, Double> addressToCoordinates(List<String> endereco){
+    public HashMap<String, Double> addressToCoordinates(List<String> endereco){
         String uri = "https://nominatim.openstreetmap.org/search";
         StringBuilder builderParams = new StringBuilder(uri);
         builderParams.append("?").append("format=json").append("&q=");

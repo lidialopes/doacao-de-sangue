@@ -6,12 +6,12 @@ import org.json.*;
 
 public class Cadastro extends javax.swing.JFrame {
 
-    DoadorController controllerDoador;
+    UsuarioController controllerDoador;
     TipoSanguineoController controllerTipoSanguineo;
     
     public Cadastro() {
         initComponents();
-        controllerDoador = new DoadorController();
+        controllerDoador = new UsuarioController();
         controllerTipoSanguineo = new TipoSanguineoController();
         controllerTipoSanguineo
                 .getTipos()

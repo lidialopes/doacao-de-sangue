@@ -1,14 +1,14 @@
 package view;
 
-import controller.DoadorController;
+import controller.UsuarioController;
 
 public class Login extends javax.swing.JFrame {
     
-    private DoadorController controller;
+    private UsuarioController controller;
     
     public Login() {
         initComponents();
-        this.controller = new DoadorController();
+        this.controller = new UsuarioController();
     }
 
     @SuppressWarnings("unchecked")
